@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+app/appclient
+app/appserver
+app/recvfile
+app/sendfile
+app/test
+src/udt

@@ -14,10 +14,11 @@
 using namespace std;
 
 int main(int argc, char* argv[])
+
 {
-   if ((argc != 5) || (0 == atoi(argv[2])))
+   if (((argc != 5) && (argc !=6)) || (0 == atoi(argv[2])))
    {
-      cout << "usage: recvfile server_ip server_port remote_filename local_filename" << endl;
+      cout << "usage: recvfile server_ip server_port remote_filename local_filename [client_port]" << endl;
       return -1;
    }
 
@@ -39,7 +40,23 @@ int main(int argc, char* argv[])
       return -1;
    }
 
-   // connect to the server, implict bind
+   // execute explicit bind if client port number is specified
+   if (argc == 6) {
+      sockaddr_in client_addr;
+      memset(&client_addr, 0, sizeof(client_addr));
+      client_addr.sin_family = AF_INET;
+      client_addr.sin_addr.s_addr = INADDR_ANY;
+      client_addr.sin_port = htons(atoi(argv[5]));
+
+      if (UDT::ERROR == UDT::bind(fhandle, (sockaddr *)&client_addr, sizeof(client_addr)))
+      {
+         cout << "bind: " << UDT::getlasterror().getErrorMessage() << endl;
+         return -1;
+      }
+
+   }
+
+   // coonnect to server
    if (UDT::ERROR == UDT::connect(fhandle, peer->ai_addr, peer->ai_addrlen))
    {
       cout << "connect: " << UDT::getlasterror().getErrorMessage() << endl;
