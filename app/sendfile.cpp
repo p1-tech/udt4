@@ -85,7 +85,8 @@ int main(int argc, char* argv[])
       char clienthost[NI_MAXHOST];
       char clientservice[NI_MAXSERV];
       getnameinfo((sockaddr *)&clientaddr, addrlen, clienthost, sizeof(clienthost), clientservice, sizeof(clientservice), NI_NUMERICHOST|NI_NUMERICSERV);
-      cout << "new connection: " << clienthost << ":" << clientservice << endl;
+      // Reduced logging
+      // cout << "new connection: " << clienthost << ":" << clientservice << endl;
 
       #ifndef WIN32
          pthread_t filethread;
@@ -156,7 +157,8 @@ DWORD WINAPI sendfile(LPVOID usocket)
    }
 
    UDT::perfmon(fhandle, &trace);
-   cout << "speed = " << trace.mbpsSendRate << "Mbits/sec" << endl;
+   // Reduce log output
+   //cout << "speed = " << trace.mbpsSendRate << "Mbits/sec" << endl;
 
    UDT::close(fhandle);
 
