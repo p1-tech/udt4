@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
    if (UDT::ERROR == UDT::connect(fhandle, peer->ai_addr, peer->ai_addrlen))
    {
       cout << "connect: " << UDT::getlasterror().getErrorMessage() << endl;
-      return -1;
+      return 1;
    }
 
    freeaddrinfo(peer);
@@ -55,13 +55,13 @@ int main(int argc, char* argv[])
    if (UDT::ERROR == UDT::send(fhandle, (char*)&len, sizeof(int), 0))
    {
       cout << "send: " << UDT::getlasterror().getErrorMessage() << endl;
-      return -1;
+      return 2;
    }
 
    if (UDT::ERROR == UDT::send(fhandle, argv[3], len, 0))
    {
       cout << "send: " << UDT::getlasterror().getErrorMessage() << endl;
-      return -1;
+      return 2;
    }
 
    // get size information
@@ -70,13 +70,13 @@ int main(int argc, char* argv[])
    if (UDT::ERROR == UDT::recv(fhandle, (char*)&size, sizeof(int64_t), 0))
    {
       cout << "send: " << UDT::getlasterror().getErrorMessage() << endl;
-      return -1;
+      return 2;
    }
 
    if (size < 0)
    {
       cout << "no such file " << argv[3] << " on the server\n";
-      return -1;
+      return 3;
    }
 
    // receive the file
@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
    if (UDT::ERROR == (recvsize = UDT::recvfile(fhandle, ofs, offset, size)))
    {
       cout << "recvfile: " << UDT::getlasterror().getErrorMessage() << endl;
-      return -1;
+      return 4;
    }
 
    UDT::close(fhandle);
