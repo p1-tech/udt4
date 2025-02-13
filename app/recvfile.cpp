@@ -35,14 +35,14 @@ int main(int argc, char* argv[])
 
    if (0 != getaddrinfo(argv[1], argv[2], &hints, &peer))
    {
-      cout << "incorrect server/peer address. " << argv[1] << ":" << argv[2] << endl;
+      cerr << "incorrect server/peer address. " << argv[1] << ":" << argv[2] << endl;
       return -1;
    }
 
    // connect to the server, implict bind
    if (UDT::ERROR == UDT::connect(fhandle, peer->ai_addr, peer->ai_addrlen))
    {
-      cout << "connect: " << UDT::getlasterror().getErrorMessage() << endl;
+      cerr << "connect: " << UDT::getlasterror().getErrorMessage() << endl;
       return 1;
    }
 
@@ -54,13 +54,13 @@ int main(int argc, char* argv[])
 
    if (UDT::ERROR == UDT::send(fhandle, (char*)&len, sizeof(int), 0))
    {
-      cout << "send: " << UDT::getlasterror().getErrorMessage() << endl;
+      cerr << "send: " << UDT::getlasterror().getErrorMessage() << endl;
       return 2;
    }
 
    if (UDT::ERROR == UDT::send(fhandle, argv[3], len, 0))
    {
-      cout << "send: " << UDT::getlasterror().getErrorMessage() << endl;
+      cerr << "send: " << UDT::getlasterror().getErrorMessage() << endl;
       return 2;
    }
 
@@ -69,13 +69,13 @@ int main(int argc, char* argv[])
 
    if (UDT::ERROR == UDT::recv(fhandle, (char*)&size, sizeof(int64_t), 0))
    {
-      cout << "send: " << UDT::getlasterror().getErrorMessage() << endl;
+      cerr << "send: " << UDT::getlasterror().getErrorMessage() << endl;
       return 2;
    }
 
    if (size < 0)
    {
-      cout << "no such file " << argv[3] << " on the server\n";
+      cerr << "no such file " << argv[3] << " on the server\n";
       return 3;
    }
 
@@ -86,8 +86,10 @@ int main(int argc, char* argv[])
 
    if (UDT::ERROR == (recvsize = UDT::recvfile(fhandle, ofs, offset, size)))
    {
-      cout << "recvfile: " << UDT::getlasterror().getErrorMessage() << endl;
+      cerr << "recvfile: " << UDT::getlasterror().getErrorMessage() << endl;
       return 4;
+   } else {
+      cout << argv[3] << ": " << recvsize << "/" << size << " bytes" << endl;
    }
 
    UDT::close(fhandle);
