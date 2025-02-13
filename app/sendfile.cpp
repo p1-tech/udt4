@@ -126,7 +126,7 @@ DWORD WINAPI sendfile(LPVOID usocket)
 
    if (UDT::ERROR == UDT::recv(fhandle, file, len, 0))
    {
-      cout << "recv: " << UDT::getlasterror().getErrorMessage() << endl;
+      cerr << "recv: " << UDT::getlasterror().getErrorMessage() << endl;
       return 0;
    }
    file[len] = '\0';
@@ -141,7 +141,7 @@ DWORD WINAPI sendfile(LPVOID usocket)
    // send file size information
    if (UDT::ERROR == UDT::send(fhandle, (char*)&size, sizeof(int64_t), 0))
    {
-      cout << "send: " << UDT::getlasterror().getErrorMessage() << endl;
+      cerr << "send: " << UDT::getlasterror().getErrorMessage() << endl;
       return 0;
    }
 
@@ -152,7 +152,7 @@ DWORD WINAPI sendfile(LPVOID usocket)
    int64_t offset = 0;
    if (UDT::ERROR == UDT::sendfile(fhandle, ifs, offset, size))
    {
-      cout << "sendfile: " << UDT::getlasterror().getErrorMessage() << endl;
+      cerr << "sendfile: " << UDT::getlasterror().getErrorMessage() << endl;
       return 0;
    }
 
